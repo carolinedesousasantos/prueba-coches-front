@@ -159,7 +159,7 @@ export default {
                     marca: this.marca,
                     modelo: this.modelo,
                     cantidad: parseInt(this.cantidad),
-                    precio: this.precio.toFixed(2),
+                    precio: this.precio,
                     disponible: this.disponible,
                     color: this.colorSelected
                 };

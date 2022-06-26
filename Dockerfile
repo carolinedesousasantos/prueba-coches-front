@@ -16,8 +16,10 @@ RUN npm install
 # copiar los archivos y carpetas del proyecto al directorio de trabajo actual (es decir, la carpeta 'app')
 COPY . .
 
-# construir aplicación para producción minificada
-RUN npm run build
+# construir aplicación para desarollo
+EXPOSE 9402
+CMD npm run serve
 
-EXPOSE 8080
-CMD [ "http-server", "dist" ]
+
+# docker build . -t carolinedesousa/prueba-coches-front:latest
+# docker push carolinedesousa/prueba-coches-front:latest
