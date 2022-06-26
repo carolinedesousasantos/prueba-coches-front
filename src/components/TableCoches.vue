@@ -94,6 +94,7 @@
     
 <script>
 const axios = require('axios').default;
+var backEndHost= process.env.BACKENDHOST || 'http://localhost:8080';
 export default {
   name: "TableCoches",
   data() {
@@ -110,7 +111,7 @@ export default {
       var self = this;
       axios({
         method: 'get',
-        url: 'http://localhost:8080/cars',
+        url: `${backEndHost}/cars`,
         responseType: 'application/json'
       })
         .then(function (response) {
@@ -128,7 +129,7 @@ export default {
 
       axios({
         method: 'delete',
-        url: `http://localhost:8080/cars/${self.carId}`,
+        url: `${backEndHost}/cars/${self.carId}`,
 
       })
         .then(function () {

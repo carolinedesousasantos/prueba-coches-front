@@ -78,6 +78,7 @@
 
 <script>
 const axios = require('axios').default;
+var backEndHost= process.env.BACKENDHOST || 'http://localhost:8080';
 export default {
     name: "FormCoches",
     data() {
@@ -123,11 +124,11 @@ export default {
                     disponible: this.disponible,
                     color: this.colorSelected
                 };
-               var backEndHost= process.env.BACKENDHOST || 'http://localhost:8080/';
+            
   
                 axios({
                     method: 'post',
-                    url: `${backEndHost/cars}`,
+                    url: `${backEndHost}/cars`,
                     responseType: 'application/json',
                     data: data
                 })
@@ -164,7 +165,7 @@ export default {
                 };
                 axios({
                     method: 'put',
-                    url: `http://localhost:8080/cars/${id}`,
+                    url: `${backEndHost}/cars/${id}`,
                     responseType: 'application/json',
                     data: data
                 })
@@ -191,7 +192,7 @@ export default {
             var self = this;
             axios({
                 method: 'get',
-                url: `http://localhost:8080/cars/${id}`,
+                url: `${backEndHost}/cars/${id}`,
                 responseType: 'application/json'
             })
                 .then(function (response) {
@@ -215,7 +216,7 @@ export default {
             var self = this;
             axios({
                 method: 'get',
-                url: 'http://localhost:8080/colors',
+                url: `${backEndHost}/colors`,
                 responseType: 'application/json'
             })
                 .then(function (response) {
