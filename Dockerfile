@@ -1,6 +1,7 @@
-FROM node:9.11.1-alpine
+FROM node:14.19.3-alpine
 
 # instalar un simple servidor http para servir nuestro contenido estático
+RUN npm i npm@latest -g 
 RUN npm install -g http-server
 
 # hacer la carpeta 'app' el directorio de trabajo actual
@@ -18,5 +19,5 @@ COPY . .
 # construir aplicación para producción minificada
 RUN npm run build
 
-EXPOSE 9402
+EXPOSE 8080
 CMD [ "http-server", "dist" ]
