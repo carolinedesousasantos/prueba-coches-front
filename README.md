@@ -2,7 +2,7 @@
 
 ## Prerequires
 
-Go to https://github.com/carolinedesousasantos/prueba-coches.git and follow the instructions for install the server api
+Go to https://github.com/carolinedesousasantos/prueba-coches-back.git and follow the instructions for install the server api
 
 
 # How to Play
