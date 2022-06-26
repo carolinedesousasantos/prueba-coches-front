@@ -17,9 +17,14 @@ RUN npm install
 COPY . .
 
 # construir aplicación para desarollo
-EXPOSE 9402
-CMD npm run serve
+#EXPOSE 9402
+#CMD npm run serve
 
+# construir aplicación para producción minificada
+RUN npm run build
+
+EXPOSE 9402
+CMD ["http-server", "dist", "-p", "9402"]
 
 # docker build . -t carolinedesousa/prueba-coches-front:latest
 # docker push carolinedesousa/prueba-coches-front:latest
