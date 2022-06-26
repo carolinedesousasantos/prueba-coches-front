@@ -32,7 +32,7 @@
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="precio" type="number" step="0.00" label="Precio" required />
+                                <v-text-field v-model="precio" type="number" min=0 step="0.00" label="Precio" required />
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                                 <v-checkbox v-model="disponible" label="Disponible para venta"></v-checkbox>
@@ -45,7 +45,7 @@
                     <v-container>
                         <v-row v-if="registrar">
                             <v-btn color="primary" class="mr-4 btn-form" @click="create">
-                                registrar
+                                Registrar
                             </v-btn>
                         </v-row>
 
@@ -58,7 +58,7 @@
 
                 </v-card-actions>
             </v-card>
-            <v-alert :value="showAlert" dense text transition="scale-transition" :type="alertType" dismissible>
+            <v-alert :value="showAlert" dense text transition="scale-transition" :type="alertType">
                 {{ responseMsg }}</v-alert>
         </v-container>
     </div>
@@ -132,8 +132,11 @@ export default {
                     .then(function (response) {
                         self.coches = response.data;
                         if (response.status == 201) {
+                            self.alertType = "success";
                             self.showAlert = true;
-                            self.responseMsg = "Coche registrado con éxito";
+                            self.responseMsg = "Coche registrado con éxito";                        
+                            self.$refs.form.resetValidation()               
+                            self.$refs.form.reset();
                         }
                     }).catch(function (error) {
                         self.showAlert = true;
@@ -153,7 +156,7 @@ export default {
                     marca: this.marca,
                     modelo: this.modelo,
                     cantidad: parseInt(this.cantidad),
-                    precio: 100.00,
+                    precio: this.precio.toFixed(2),
                     disponible: this.disponible,
                     color: this.colorSelected
                 };
@@ -166,6 +169,7 @@ export default {
                     .then(function (response) {
                         self.coches = response.data;
                         if (response.status == 200) {
+
                             self.showAlert = true;
                             self.responseMsg = "Coche actualizado con éxito";
                         }
@@ -173,6 +177,11 @@ export default {
                         self.showAlert = true;
                         self.alertType = "error";
                         self.responseMsg = error;
+                    })
+                    .finally(function() {
+                        setTimeout(() => {
+                        self.$router.push("/")
+                        }, 1000);
                     });
             }
         },
@@ -191,6 +200,7 @@ export default {
                     self.disponible = car.disponible;
                     self.cantidad = car.cantidad;
                     self.colorSelected = car.color;
+                    self.precio = car.precio;
 
                     if (!response.status == 200) {
                         self.showAlert = true;

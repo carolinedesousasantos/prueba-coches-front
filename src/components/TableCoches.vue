@@ -17,7 +17,7 @@
             <tr v-for="coche in coches" :key="coche.id">
               <td>{{ coche.modelo }}</td>
               <td>{{ coche.cantidad }}</td>
-              <td>{{ coche.precio }}</td>
+              <td>{{ coche.precio.toFixed(2) }}</td>
               <td v-if="coche.disponible">Sí</td>
               <td v-else>No</td>
               <td>
