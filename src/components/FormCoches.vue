@@ -27,7 +27,7 @@
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="cantidad" type="number" min=0 :rules="cantidadRules"
+                                <v-text-field v-model="cantidad" type="number" min=0 
                                     label="Cantidad" required />
                             </v-col>
 
@@ -100,14 +100,14 @@ export default {
                 v => v && !!v.trim() || 'El campo color no puede estar vazio',
             ],
             textFieldRules: [
-                v => v.length >= 3 || 'El campo debe tener 3 o caracteres',
+              v => (v && v.length >= 3)|| 'El campo debe tener 3 más o caracteres',
             ],
             cantidadRules: [
                 v => (v && v > 0) || "Cantidad no puede ser 0",
                 v => (v && v <= 1000) || "Cantidad no debe exceder 1000",
             ],
             precioRules: [
-                v => Number.isInteger(!Number(v)) || "El formato del precio no está correcto",
+                v => (v && v <= 100000) || "Precio no debe exceder 100000",
             ],
             idParam: 0,
         }
@@ -124,8 +124,6 @@ export default {
                     disponible: this.disponible,
                     color: this.colorSelected
                 };
-            
-  
                 axios({
                     method: 'post',
                     url: `${backEndHost}/cars`,
@@ -138,23 +136,29 @@ export default {
                             self.alertType = "success";
                             self.showAlert = true;
                             self.responseMsg = "Coche registrado con éxito";                        
-                            self.$refs.form.resetValidation()               
-                            self.$refs.form.reset();
                         }
                     }).catch(function (error) {
+                        console.log(error.response.data);
                         self.showAlert = true;
                         self.alertType = "error";
-                        self.responseMsg = error;
-                    });
+                        self.responseMsg = error.response.data
+                    }).finally(function(){
+                        self.$refs.form.resetValidation()               
+                        self.$refs.form.reset();
+                        
+                        setTimeout(() => {
+                             self.showAlert = false;
+                        }, 3000);
+                    })
             }
         },
         getSelectedColor(event) {
             this.colorSelected = event;
         },
         updateCar() {
+              var self = this;
             if (this.$refs.form.validate()) {
                 var id = this.idParam;
-                var self = this;
                 var data = {
                     marca: this.marca,
                     modelo: this.modelo,
@@ -172,19 +176,17 @@ export default {
                     .then(function (response) {
                         self.coches = response.data;
                         if (response.status == 200) {
-
                             self.showAlert = true;
                             self.responseMsg = "Coche actualizado con éxito";
+                            setTimeout(() => {
+                            self.$router.push("/")
+                            }, 2000);
                         }
                     }).catch(function (error) {
+                        console.log(error.response.data);
                         self.showAlert = true;
                         self.alertType = "error";
-                        self.responseMsg = error;
-                    })
-                    .finally(function() {
-                        setTimeout(() => {
-                        self.$router.push("/")
-                        }, 1000);
+                        self.responseMsg = error.response.data;
                     });
             }
         },
